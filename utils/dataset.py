@@ -36,4 +36,10 @@ def get_dataloader(data_dir, batch_size=32, is_train=True, num_workers=2):
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
         ])
 
+    # 2. Load Dataset bằng ImageFolder
+    # Vì thư mục tổ chức theo dạng: data_dir/class_id/image.jpg
+    dataset = datasets.ImageFolder(root=data_dir, transform=transform)
+    
+    num_classes = len(dataset.classes)
+
     
