@@ -42,4 +42,27 @@ def get_dataloader(data_dir, batch_size=32, is_train=True, num_workers=2):
     
     num_classes = len(dataset.classes)
 
+    # 3. Đóng gói vào DataLoader
+    dataloader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=is_train, # Chỉ xáo trộn dữ liệu khi train
+        num_workers=num_workers,
+        pin_memory=True # Giúp tăng tốc truyền dữ liệu từ CPU sang GPU khi dùng Colab
+    )
     
+    return dataloader, num_classes
+
+if __name__ == "__main__":
+    # Test thử script (chạy file này trực tiếp để kiểm tra)
+    test_data_path = "../data/casia_webface_clean" # Đường dẫn tương đối từ utils/dataset.py
+    if os.path.exists(test_data_path):
+        loader, classes = get_dataloader(test_data_path, batch_size=4, is_train=True)
+        print(f"Tổng số ID (Classes): {classes}")
+        
+        # Lấy thử 1 batch
+        images, labels = next(iter(loader))
+        print(f"Shape của 1 batch ảnh: {images.shape}")
+        print(f"Nhãn của batch này: {labels}")
+    else:
+        print(f"Không tìm thấy thư mục {test_data_path}, hãy kiểm tra lại đường dẫn!")
